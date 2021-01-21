@@ -19,6 +19,10 @@ import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
+import io.android.banktsf.DatabaseHelper;
+import io.android.banktsf.R;
+import io.android.banktsf.sendtouser;
+
 
 public class user_data extends AppCompatActivity {
 
@@ -61,7 +65,7 @@ public class user_data extends AppCompatActivity {
     }
 
     private void showData(String phonenumber) {
-        Cursor cursor = new com.example.myapplication.DatabaseHelper(this).readparticulardata(phonenumber);
+        Cursor cursor = new DatabaseHelper(this).readparticulardata(phonenumber);
         while(cursor.moveToNext()) {
             String balancefromdb = cursor.getString(2);
             newbalance = Double.parseDouble(balancefromdb);
@@ -113,7 +117,7 @@ public class user_data extends AppCompatActivity {
                 }else if(Double.parseDouble(mAmount.getText().toString()) > newbalance){
                     mAmount.setError("Your account don't have enough balance");
                 }else{
-                    Intent intent = new Intent(user_data.this, com.example.myapplication.sendtouser.class);
+                    Intent intent = new Intent(user_data.this, sendtouser.class);
                     intent.putExtra("phonenumber", phoneNumber.getText().toString());
                     intent.putExtra("name", name.getText().toString());
                     intent.putExtra("currentamount", newbalance.toString());
@@ -136,7 +140,7 @@ public class user_data extends AppCompatActivity {
                         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MMM-yyyy, hh:mm a");
                         String date = simpleDateFormat.format(calendar.getTime());
 
-                        new com.example.myapplication.DatabaseHelper(user_data.this).insertTransferData(date, name.getText().toString(), "Not selected", "0", "Failed");
+                        new DatabaseHelper(user_data.this).insertTransferData(date, name.getText().toString(), "Not selected", "0", "Failed");
                         Toast.makeText(user_data.this, "Transaction Cancelled!", Toast.LENGTH_LONG).show();
                     }
                 }).setNegativeButton("No", new DialogInterface.OnClickListener() {
